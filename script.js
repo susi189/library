@@ -1,7 +1,5 @@
 let myLibrary = [];
 
-
-
 function Book(title, author, pages, read){
     this.title = title;
     this.author = author;
@@ -28,12 +26,15 @@ function addBookToLibrary(arguments){
     }
 }
 
-const book = document.querySelector('.book');
+const bookList = document.querySelector('.book-list');
 
 addBookToLibrary([book1, book2, book3])
 
 function displayBooks(myLibrary){
     myLibrary.forEach(function(elem){
+        //create a book div and to each add the list of 
+        let bookDiv = document.createElement('div');
+        bookList.appendChild(bookDiv).setAttribute('class', 'book')
         for(let key in elem){
             let item = document.createElement('div');
             let content = elem[key];
@@ -41,7 +42,7 @@ function displayBooks(myLibrary){
                 content = elem[key].call(this, key);
             } 
             item.innerText = content;
-            book.appendChild(item).setAttribute('id', key);
+            bookDiv.appendChild(item).setAttribute('id', key);
         }
     })
 }
