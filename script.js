@@ -26,10 +26,10 @@ function addBookToLibrary(arguments){
     }
 }
 
-addBookToLibrary([book1, book2, book3])
-
 
 const bookList = document.querySelector('.book-list');
+
+addBookToLibrary([book1, book2, book3])
 
 function displayBooks(myLibrary){
     myLibrary.forEach(function(elem){
@@ -53,43 +53,73 @@ displayBooks(myLibrary);
 const section = document.querySelector('section');
 const addBook = document.getElementById('add-book');
 
+function createBook(title){
+    let newBook = new Book(title);
+    myLibrary.push(newBook)
+    console.log(myLibrary)
+}
+
 
 function addBookForm(){
     const form = document.createElement('FORM');
-    
+
     const titleSection = document.createElement('label');
     const titleInput = document.createElement('input');
+    Object.assign(titleInput, {
+        type: 'text',
+        id: 'title'
+    })
     titleSection.innerText = 'Title:';
-    titleSection.appendChild(document.createElement('BR'));
+    
 
     const authorSection = document.createElement('label');
     const authorInput = document.createElement('input');
     authorSection.innerText = 'Author:';
-    authorSection.appendChild(document.createElement('BR'));
 
     const pagesSection = document.createElement('label');
     const pagesInput = document.createElement('input');
     pagesSection.innerText = 'Number of pages:';
-    pagesSection.appendChild(document.createElement('BR'));
 
     const statusSection = document.createElement('label');
     const statusInput = document.createElement('input');
     statusSection.innerText = 'Have you read this book? (yes/no):';
-    statusSection.appendChild(document.createElement('BR'));
 
+    // const submitButton = document.createElement('BUTTON');
+    // submitButton.innerText = 'Submit';
+ 
+ 
 
     section.appendChild(form);
 
     form.appendChild(titleSection).setAttribute('for', 'title');
-    form.appendChild(titleInput).setAttribute('type', 'text');
+    form.appendChild(titleInput);
+    form.insertBefore(document.createElement('BR'), titleInput);
     form.appendChild(authorSection).setAttribute('for', 'title');
+    form.insertBefore(document.createElement('BR'), authorSection);
     form.appendChild(authorInput).setAttribute('type', 'text');
+    form.insertBefore(document.createElement('BR'), authorInput);
     form.appendChild(pagesSection).setAttribute('for', 'title');
+    form.insertBefore(document.createElement('BR'), pagesSection);
     form.appendChild(pagesInput).setAttribute('type', 'text');
+    form.insertBefore(document.createElement('BR'), pagesInput);
     form.appendChild(statusSection).setAttribute('for', 'title');
+    form.insertBefore(document.createElement('BR'), statusSection);
     form.appendChild(statusInput).setAttribute('type', 'text');
+    form.insertBefore(document.createElement('BR'), statusInput);
+
+    form.insertAdjacentHTML('afterend', document.createElement('BUTTON'))
+ 
+    // submitButton.addEventListener('click', () => {
+    //     let title = document.getElementById(title).nodeValue;
+    //     createBook(title, 'here');
+    // })
+
+    
 }
 
 addBook.addEventListener('click', () => {
     addBookForm()
+
+    
 })
+
