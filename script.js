@@ -11,29 +11,20 @@ function Book(title, author, pages, read){
             return 'want to read'
         }
     }
-    // this.info= function(){
-    //    return this.title + ', ' + this.author + ', ' + this.pages + ', ' + this.read()
-    // }
 }
 
-const book1 = new Book('My Brilliant Friend', 'Elena Ferrante', 331, 'yes');
-const book2 = new Book('Little Fires Everywhere', 'Celeste Ng', 338, 'yes');
-const book3 = new Book('The Master and Margarita', 'Mikhail Bulgakov', 372, 'no');
 
-function addBookToLibrary(arguments){
-    for(let i=0; i<arguments.length; i++){
-        myLibrary.push(arguments[i])
-    }
+function addBookToLibrary(book){
+    myLibrary.push(book)
 }
-
 
 const bookList = document.querySelector('.book-list');
-
-addBookToLibrary([book1, book2, book3])
+const removeButton = document.createElement('BUTTON');
+removeButton.innerText = 'Remove';
 
 function displayBooks(myLibrary){
-    myLibrary.forEach(function(elem){
-        //create a book div and to each add the list of 
+    myLibrary.forEach(function(elem, i){
+        //create a book div for each book and add attributes
         let bookDiv = document.createElement('div');
         bookList.appendChild(bookDiv).setAttribute('class', 'book');
         for(let key in elem){
@@ -43,52 +34,57 @@ function displayBooks(myLibrary){
                 content = elem[key].call(this, key);
             } 
             item.innerText = content;
-            bookDiv.appendChild(item).setAttribute('id', key);
+            bookDiv.appendChild(item).setAttribute('id', key)
+            item.setAttribute('data-index', i);
         }
+        bookDiv.appendChild(removeButton)
     })
 }
 
-displayBooks(myLibrary);
 
 const section = document.querySelector('section');
 const addBook = document.getElementById('add-book');
 
-function createBook(title){
-    let newBook = new Book(title);
-    myLibrary.push(newBook)
-    console.log(myLibrary)
-}
+const submitButton = document.createElement('BUTTON');
+submitButton.innerText = 'Submit';
+
+const form = document.createElement('FORM');
+
+const titleSection = document.createElement('label');
+const titleInput = document.createElement('input');
+Object.assign(titleInput, {
+    type: 'text',
+    id: 'title-value'
+})
+titleSection.innerText = 'Title:';
+
+
+const authorSection = document.createElement('label');
+const authorInput = document.createElement('input');
+Object.assign(authorInput, {
+    type: 'text',
+    id: 'author-value'
+})
+authorSection.innerText = 'Author:';
+
+const pagesSection = document.createElement('label');
+const pagesInput = document.createElement('input');
+Object.assign(pagesInput, {
+    type: 'text',
+    id: 'pages-value'
+})
+pagesSection.innerText = 'Number of pages:';
+
+const statusSection = document.createElement('label');
+const statusInput = document.createElement('input');
+Object.assign(statusInput, {
+    type: 'text',
+    id: 'status-value'
+})
+statusSection.innerText = 'Have you read this book? (yes/no):';   
 
 
 function addBookForm(){
-    const form = document.createElement('FORM');
-
-    const titleSection = document.createElement('label');
-    const titleInput = document.createElement('input');
-    Object.assign(titleInput, {
-        type: 'text',
-        id: 'title'
-    })
-    titleSection.innerText = 'Title:';
-    
-
-    const authorSection = document.createElement('label');
-    const authorInput = document.createElement('input');
-    authorSection.innerText = 'Author:';
-
-    const pagesSection = document.createElement('label');
-    const pagesInput = document.createElement('input');
-    pagesSection.innerText = 'Number of pages:';
-
-    const statusSection = document.createElement('label');
-    const statusInput = document.createElement('input');
-    statusSection.innerText = 'Have you read this book? (yes/no):';
-
-    // const submitButton = document.createElement('BUTTON');
-    // submitButton.innerText = 'Submit';
- 
- 
-
     section.appendChild(form);
 
     form.appendChild(titleSection).setAttribute('for', 'title');
@@ -107,19 +103,23 @@ function addBookForm(){
     form.appendChild(statusInput).setAttribute('type', 'text');
     form.insertBefore(document.createElement('BR'), statusInput);
 
-    form.insertAdjacentHTML('afterend', document.createElement('BUTTON'))
- 
-    // submitButton.addEventListener('click', () => {
-    //     let title = document.getElementById(title).nodeValue;
-    //     createBook(title, 'here');
-    // })
-
-    
+    section.appendChild(submitButton); 
 }
 
 addBook.addEventListener('click', () => {
     addBookForm()
-
-    
+  
 })
+
+submitButton.addEventListener('click', () => {
+        let bookTitle = document.getElementById('title-value').value;
+        let bookAuthor = document.getElementById('author-value').value;
+        let bookPages = document.getElementById('pages-value').value;
+        let readStatus = document.getElementById('status-value').value;
+        
+        const newBook = new Book(bookTitle, bookAuthor, bookPages, readStatus);
+
+        addBookToLibrary(newBook);
+        displayBooks(myLibrary);
+    })
 
