@@ -35,12 +35,15 @@ function displayBooks(myLibrary){
             } 
             item.innerText = content;
             bookDiv.appendChild(item).setAttribute('id', key)
-            item.setAttribute('data-index', i);
+            bookDiv.setAttribute('data-index', i);
         }
         bookDiv.appendChild(removeButton)
     })
 }
 
+removeButton.addEventListener('click', () => {
+    
+})
 
 const section = document.querySelector('section');
 const addBook = document.getElementById('add-book');
