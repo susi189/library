@@ -19,31 +19,29 @@ function addBookToLibrary(book){
 }
 
 const bookList = document.querySelector('.book-list');
-const removeButton = document.createElement('BUTTON');
-removeButton.innerText = 'Remove';
 
-function displayBooks(myLibrary){
-    myLibrary.forEach(function(elem, i){
+function displayBooks(book){
         //create a book div for each book and add attributes
         let bookDiv = document.createElement('div');
+        let removeButton = document.createElement('BUTTON');
+        removeButton.innerText = 'Remove';
         bookList.appendChild(bookDiv).setAttribute('class', 'book');
-        for(let key in elem){
+        for(let key in book){
             let item = document.createElement('div');
-            let content = elem[key];
-            if(typeof elem[key] === 'function'){
-                content = elem[key].call(this, key);
+            let content = book[key];
+            if(typeof book[key] === 'function'){
+                content = book[key].call(this, key);
             } 
             item.innerText = content;
-            bookDiv.appendChild(item).setAttribute('id', key)
-            bookDiv.setAttribute('data-index', i);
+            bookDiv.appendChild(item).setAttribute('id', key);
+            bookDiv.appendChild(removeButton);
         }
-        bookDiv.appendChild(removeButton)
-    })
 }
 
-removeButton.addEventListener('click', () => {
-    
-})
+// removeButton.addEventListener('click', (event) => {
+//     let currentButton = event.target;
+//     currentButton.parentElement.remove();
+// })
 
 const section = document.querySelector('section');
 const addBook = document.getElementById('add-book');
@@ -123,6 +121,7 @@ submitButton.addEventListener('click', () => {
         const newBook = new Book(bookTitle, bookAuthor, bookPages, readStatus);
 
         addBookToLibrary(newBook);
-        displayBooks(myLibrary);
+        displayBooks(myLibrary[myLibrary.length-1]);
+        document.querySelector('form').reset();
     })
 
