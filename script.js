@@ -10,16 +10,13 @@ function Book(title, author, pages, read){
             return 'finished'
         } else if(val === 'no'){
             return 'want to read'
-        }
+        } 
     }
 }
 
-
-function addBookToLibrary(book){
-    myLibrary.push(book)
+Book.prototype.changeStatus = function(){
+    return function(){}
 }
-
-const bookList = document.querySelector('.book-list');
 
 function displayBooks(book){
         //create a book div for each book and add attributes
@@ -28,20 +25,37 @@ function displayBooks(book){
         removeButton.innerText = 'Remove';
         removeButton.setAttribute('id', 'remove-button');
         bookList.appendChild(bookDiv).setAttribute('class', 'book');
+        let statusChangeBtn = document.createElement('BUTTON')
+        statusChangeBtn.innerText = 'Change'
         for(let key in book){
-            let item = document.createElement('div');
-            let content = book[key];
-            if(typeof book[key] === 'function'){
-                content = book[key].call(this, key);
-            } 
-            item.innerText = content;
-            bookDiv.appendChild(item).setAttribute('id', key);
+            console.log(key);
+            if(key === 'changeStatus'){
+                bookDiv.appendChild(statusChangeBtn);
+            } else {
+                let item = document.createElement('div');
+                let content = book[key];
+                if(typeof book[key] === 'function'){
+                    content = book[key].call(this, key);
+                }
+                item.innerText = content;
+                bookDiv.appendChild(item).setAttribute('id', key);
+            }
             bookDiv.appendChild(removeButton);
+            
         }
         removeButton.addEventListener('click', () => {
             bookDiv.remove()
         })
 }
+
+
+function addBookToLibrary(title, author, pages, read){
+    const newBook = new Book(title, author, pages, read);
+    myLibrary.push(newBook);
+    displayBooks(myLibrary[myLibrary.length-1]);
+}
+
+const bookList = document.querySelector('.book-list');
 
 const section = document.querySelector('section');
 const addBook = document.getElementById('add-book');
@@ -118,12 +132,9 @@ submitButton.addEventListener('click', () => {
         let bookAuthor = document.getElementById('author-value').value;
         let bookPages = document.getElementById('pages-value').value;
         let readStatus = document.getElementById('status-value').value;
-        
+    
 
-        const newBook = new Book(bookTitle, bookAuthor, bookPages, readStatus);
-
-        addBookToLibrary(newBook);
-        displayBooks(myLibrary[myLibrary.length-1]);
+        addBookToLibrary(bookTitle, bookAuthor, bookPages, readStatus);
         document.querySelector('form').reset();
     })
 
