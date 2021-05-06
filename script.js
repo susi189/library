@@ -5,9 +5,10 @@ function Book(title, author, pages, read){
     this.author = author;
     this.pages = pages;
     this.read = function(){
-        if(read === 'yes'){
+        let val = read.toLowerCase()
+        if(val === 'yes'){
             return 'finished'
-        } else if(read === 'no'){
+        } else if(val === 'no'){
             return 'want to read'
         }
     }
@@ -25,6 +26,7 @@ function displayBooks(book){
         let bookDiv = document.createElement('div');
         let removeButton = document.createElement('BUTTON');
         removeButton.innerText = 'Remove';
+        removeButton.setAttribute('id', 'remove-button');
         bookList.appendChild(bookDiv).setAttribute('class', 'book');
         for(let key in book){
             let item = document.createElement('div');
@@ -36,12 +38,10 @@ function displayBooks(book){
             bookDiv.appendChild(item).setAttribute('id', key);
             bookDiv.appendChild(removeButton);
         }
+        removeButton.addEventListener('click', () => {
+            bookDiv.remove()
+        })
 }
-
-// removeButton.addEventListener('click', (event) => {
-//     let currentButton = event.target;
-//     currentButton.parentElement.remove();
-// })
 
 const section = document.querySelector('section');
 const addBook = document.getElementById('add-book');
@@ -105,12 +105,13 @@ function addBookForm(){
     form.insertBefore(document.createElement('BR'), statusInput);
 
     section.appendChild(submitButton); 
+
 }
 
 addBook.addEventListener('click', () => {
     addBookForm()
-  
 })
+
 
 submitButton.addEventListener('click', () => {
         let bookTitle = document.getElementById('title-value').value;
@@ -118,10 +119,12 @@ submitButton.addEventListener('click', () => {
         let bookPages = document.getElementById('pages-value').value;
         let readStatus = document.getElementById('status-value').value;
         
+
         const newBook = new Book(bookTitle, bookAuthor, bookPages, readStatus);
 
         addBookToLibrary(newBook);
         displayBooks(myLibrary[myLibrary.length-1]);
         document.querySelector('form').reset();
     })
+
 
