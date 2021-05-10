@@ -4,18 +4,25 @@ function Book(title, author, pages, read){
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = function(){
-        let val = read.toLowerCase()
-        if(val === 'yes'){
-            return 'finished'
-        } else if(val === 'no'){
-            return 'want to read'
-        } 
-    }
+    this.read = read;
 }
 
-Book.prototype.changeStatus = function(){
-    return function(){}
+Book.prototype.displayStatus = function(currentStatus){
+    let val = currentStatus.toLowerCase();
+        if(val === 'yes'){
+            this.read = 'finished'
+        } else if(val === 'no'){
+            this.read = 'want to read'
+        }
+        return this.read
+}
+Book.prototype.changeStatus = function(currentStatus){
+     if(currentStatus === 'finished'){
+         this.read = 'want to read';
+     } else if(currentStatus === 'want to read'){
+         this.read = 'finished';
+     }
+     return this.read
 }
 
 function displayBooks(book){
@@ -25,24 +32,27 @@ function displayBooks(book){
         removeButton.innerText = 'Remove';
         removeButton.setAttribute('id', 'remove-button');
         bookList.appendChild(bookDiv).setAttribute('class', 'book');
-        let statusChangeBtn = document.createElement('BUTTON')
-        statusChangeBtn.innerText = 'Change'
+        let statusChangeBtn = document.createElement('BUTTON');
+        statusChangeBtn.innerText = 'Change';
+        statusChangeBtn.setAttribute('id', 'status-change');
         for(let key in book){
-            console.log(key);
             if(key === 'changeStatus'){
                 bookDiv.appendChild(statusChangeBtn);
-            } else {
+            } else if(typeof book[key] !== 'function') {
                 let item = document.createElement('div');
                 let content = book[key];
-                if(typeof book[key] === 'function'){
-                    content = book[key].call(this, key);
+                if(key === 'read'){
+                    content = book.displayStatus(book[key]);
                 }
                 item.innerText = content;
                 bookDiv.appendChild(item).setAttribute('id', key);
             }
             bookDiv.appendChild(removeButton);
-            
         }
+        statusChangeBtn.addEventListener('click', () => {
+            let readLine = bookDiv.querySelector('#read');
+            readLine.innerText = book.changeStatus(book.read)
+        })
         removeButton.addEventListener('click', () => {
             bookDiv.remove()
         })
