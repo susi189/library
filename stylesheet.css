@@ -1,7 +1,9 @@
 .book {
   padding: 15px;
+  font-family: "Roboto", sans-serif;
 }
 
 #title {
   color: blue;
+  font-size: 1.5em;
 }
