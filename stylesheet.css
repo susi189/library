@@ -1,6 +1,24 @@
-.book {
-  padding: 15px;
+body {
   font-family: "Roboto", sans-serif;
+}
+
+section {
+  padding: 20px;
+}
+
+form {
+  font-size: 0.9em;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+#main-title {
+  font-size: 2em;
+  padding-bottom: 20px;
+}
+
+.book {
+  padding-bottom: 25px;
 }
 
 #title {

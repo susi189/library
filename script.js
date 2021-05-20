@@ -14,7 +14,7 @@ Book.prototype.displayStatus = function(currentStatus){
         } else if(val === 'no'){
             this.read = 'want to read'
         }
-        return this.read
+        return 'Status: ' + this.read
 }
 Book.prototype.changeStatus = function(currentStatus){
      if(currentStatus === 'finished'){
@@ -25,49 +25,20 @@ Book.prototype.changeStatus = function(currentStatus){
      return this.read
 }
 
-function displayBooks(book){
-        //create a book div for each book and add attributes
-        let bookDiv = document.createElement('div');
-        let removeButton = document.createElement('BUTTON');
-        removeButton.innerText = 'Remove';
-        removeButton.setAttribute('id', 'remove-button');
-        bookList.appendChild(bookDiv).setAttribute('class', 'book');
-        let statusChangeBtn = document.createElement('BUTTON');
-        statusChangeBtn.innerText = 'Change';
-        statusChangeBtn.setAttribute('id', 'status-change');
-        for(let key in book){
-            if(key === 'changeStatus'){
-                bookDiv.appendChild(statusChangeBtn);
-            } else if(typeof book[key] !== 'function') {
-                let item = document.createElement('div');
-                let content = book[key];
-                if(key === 'read'){
-                    content = book.displayStatus(book[key]);
-                }
-                item.innerText = content;
-                bookDiv.appendChild(item).setAttribute('id', key);
-            }
-            bookDiv.appendChild(removeButton);
-        }
-        statusChangeBtn.addEventListener('click', () => {
-            let readLine = bookDiv.querySelector('#read');
-            readLine.innerText = book.changeStatus(book.read)
-        })
-        removeButton.addEventListener('click', () => {
-            bookDiv.remove()
-        })
+Book.prototype.printContent = function(key){
+    if(key === 'title'){
+        return this.title
+    } else if(key === 'author'){
+        return 'Author: ' + this.author
+    } else if (key === 'pages'){
+        return 'Pages: ' + this.pages
+    }
 }
 
-
-function addBookToLibrary(title, author, pages, read){
-    const newBook = new Book(title, author, pages, read);
-    myLibrary.push(newBook);
-    displayBooks(myLibrary[myLibrary.length-1]);
-}
-
-const bookList = document.querySelector('.book-list');
 
 const section = document.querySelector('section');
+
+const bookList = document.querySelector('.book-list');
 const addBook = document.getElementById('add-book');
 
 const submitButton = document.createElement('BUTTON');
@@ -107,6 +78,48 @@ Object.assign(statusInput, {
     id: 'status-value'
 })
 statusSection.innerText = 'Have you read this book? (yes/no):';   
+
+
+
+function addBookToLibrary(title, author, pages, read){
+    const newBook = new Book(title, author, pages, read);
+    myLibrary.push(newBook);
+    displayBooks(myLibrary[myLibrary.length-1]);
+}
+
+
+function displayBooks(book){
+        //create a seperate div for every book
+        let bookDiv = document.createElement('div');
+        let removeButton = document.createElement('BUTTON');
+        removeButton.innerText = 'Remove book';
+        removeButton.setAttribute('id', 'remove-button');
+        bookList.appendChild(bookDiv).setAttribute('class', 'book');
+        let statusChangeBtn = document.createElement('BUTTON');
+        statusChangeBtn.innerText = 'Change Status';
+        statusChangeBtn.setAttribute('id', 'status-change');
+        for(let key in book){
+            if(key === 'changeStatus'){
+                bookDiv.appendChild(statusChangeBtn);
+            } else if(book.hasOwnProperty(key)){
+                let item = document.createElement('div');
+                let content = book.printContent(key);
+                if(key === 'read'){
+                    content = book.displayStatus(book[key]);
+                }
+                item.innerText = content;
+                bookDiv.appendChild(item).setAttribute('id', key);
+            }
+            bookDiv.appendChild(removeButton);
+        }
+        statusChangeBtn.addEventListener('click', () => {
+            let readLine = bookDiv.querySelector('#read');
+            readLine.innerText = book.changeStatus(book.read)
+        })
+        removeButton.addEventListener('click', () => {
+            bookDiv.remove()
+        })
+}
 
 
 function addBookForm(){
