@@ -25,3 +25,12 @@ form {
   color: blue;
   font-size: 1.5em;
 }
+
+#status-change {
+  margin-top: 15px;
+}
+
+#remove-button {
+  display: flex;
+  margin-top: 10px;
+}

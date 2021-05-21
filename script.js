@@ -14,7 +14,7 @@ Book.prototype.displayStatus = function(currentStatus){
         } else if(val === 'no'){
             this.read = 'want to read'
         }
-        return 'Status: ' + this.read
+        return 'Status:  ' + this.read
 }
 Book.prototype.changeStatus = function(currentStatus){
      if(currentStatus === 'finished'){
@@ -22,16 +22,16 @@ Book.prototype.changeStatus = function(currentStatus){
      } else if(currentStatus === 'want to read'){
          this.read = 'finished';
      }
-     return this.read
+     return 'Status:  ' + this.read
 }
 
 Book.prototype.printContent = function(key){
     if(key === 'title'){
         return this.title
     } else if(key === 'author'){
-        return 'Author: ' + this.author
+        return 'Author:  ' + this.author
     } else if (key === 'pages'){
-        return 'Pages: ' + this.pages
+        return 'Pages:  ' + this.pages
     }
 }
 
@@ -45,6 +45,7 @@ const submitButton = document.createElement('BUTTON');
 submitButton.innerText = 'Submit';
 
 const form = document.createElement('FORM');
+form.setAttribute('style', 'display: none')
 
 const titleSection = document.createElement('label');
 const titleInput = document.createElement('input');
@@ -96,8 +97,9 @@ function displayBooks(book){
         removeButton.setAttribute('id', 'remove-button');
         bookList.appendChild(bookDiv).setAttribute('class', 'book');
         let statusChangeBtn = document.createElement('BUTTON');
-        statusChangeBtn.innerText = 'Change Status';
+        statusChangeBtn.innerText = 'Change status';
         statusChangeBtn.setAttribute('id', 'status-change');
+        //show the book content on the screan
         for(let key in book){
             if(key === 'changeStatus'){
                 bookDiv.appendChild(statusChangeBtn);
@@ -114,15 +116,23 @@ function displayBooks(book){
         }
         statusChangeBtn.addEventListener('click', () => {
             let readLine = bookDiv.querySelector('#read');
-            readLine.innerText = book.changeStatus(book.read)
+            readLine.innerText = book.changeStatus(book.read);
         })
         removeButton.addEventListener('click', () => {
             bookDiv.remove()
         })
 }
 
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
 
+
+//toggle form
 function addBookForm(){
+    if(form.style.display === 'none') {
     section.appendChild(form);
 
     form.appendChild(titleSection).setAttribute('for', 'title');
@@ -142,8 +152,15 @@ function addBookForm(){
     form.insertBefore(document.createElement('BR'), statusInput);
 
     section.appendChild(submitButton); 
+    form.style.display = 'block';
+    } else {
+        form.style.display = 'none'
+        section.removeChild(submitButton)
+        removeAllChildNodes(form)
+    }
 
 }
+
 
 addBook.addEventListener('click', () => {
     addBookForm()
