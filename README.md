@@ -3,7 +3,7 @@
 In this project I mostly focused on JavaScript concepts. Here I learned a lot about:
 
 - creating constructors with plain functions and class syntax
-- creating methods and prototype inheritance
+- prototype inheritance and creating methods
 - "this" keyword
 - HTML Forms
 - adding event listeners
