@@ -1,4 +1,4 @@
-** About this project **
+**About this project**
 
 In this project I mostly focused on JavaScript concepts. Here I learned a lot about:
 
